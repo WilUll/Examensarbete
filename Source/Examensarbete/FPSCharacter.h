@@ -19,6 +19,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Handles moving forward/backwards
+	void MoveForwards(const float Rate);
+
+	//Handles moving left/right
+	void MoveRight(const float Rate);
+
+	//Handles player turning around
+	void TurnAround(const float Rate);
+
+	//Handles camera look up/down
+	void LookUpDown(const float Rate);
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
