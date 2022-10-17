@@ -17,7 +17,6 @@ void AFPSCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 }
-
 // Called every frame
 void AFPSCharacter::Tick(float DeltaTime)
 {
@@ -29,6 +28,5 @@ void AFPSCharacter::Tick(float DeltaTime)
 void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
