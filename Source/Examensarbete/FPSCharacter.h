@@ -34,6 +34,10 @@ protected:
 
 	void StopSprinting();
 
+	void Shoot();
+
+	void StopShooting();
+
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float TurnRate;
 	
