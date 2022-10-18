@@ -23,7 +23,8 @@ AFPSCharacter::AFPSCharacter()
 void AFPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	GetMesh()->HideBoneByName("head", EPhysBodyOp::PBO_None);
 	Weapon = GetWorld()->SpawnActor<AWeapon>(WeaponClass);
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("GrabPoint"));
 	Weapon->SetOwner(this);
