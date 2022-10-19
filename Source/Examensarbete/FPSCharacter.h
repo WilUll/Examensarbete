@@ -34,9 +34,7 @@ protected:
 
 	void StopSprinting();
 
-	void Shoot();
 
-	void StopShooting();
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float TurnRate;
@@ -60,4 +58,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Shoot();
+
+	void StopShooting();
+
 };

@@ -3,6 +3,8 @@
 
 #include "HealthComponent.h"
 
+#include "GameFramework/Actor.h"
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -19,8 +21,18 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	CurrentHealth = MaxHealth;
+
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
+}
+
+void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigateBy, AActor* DamageCauser)
+{
+	if (Damage <= 0) return;
+	// GetWorld()->GetTimerManager().SetTimer(TimerHandle_RegenTime, &UHealthComponent::RegenHealth, 0.1f, true, RegenerateAfterTime);
+	CurrentHealth -= Damage;
+	CurrentHealth = FMath::Clamp(CurrentHealth,0.0f, MaxHealth);
 }
 
 
@@ -30,6 +42,20 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UHealthComponent::Heal(float HealAmount)
+{
+	if (CurrentHealth >= MaxHealth) return;
+
+	CurrentHealth += HealAmount;
+
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
+}
+
+void UHealthComponent::RegenHealth(float Amount)
+{
+	
 }
 
 float UHealthComponent::GetHealth()

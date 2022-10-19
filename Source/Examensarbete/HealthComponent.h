@@ -20,10 +20,15 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void TakeDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType, AController *InstigateBy, AActor * DamageCauser);
+
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void Heal(float HealAmount);
 
 private:
 	bool IsDead;
@@ -43,6 +48,7 @@ private:
 	
 	FTimerHandle TimerHandle_RegenTime;
 
+	void RegenHealth(float Amount);
 public:
 	float GetHealth();
 };
