@@ -48,7 +48,7 @@ private:
 	
 	FTimerHandle TimerHandle_RegenTime;
 
-	void RegenHealth(float Amount);
+	void RegenHealth();
 public:
 	float GetHealth();
 };

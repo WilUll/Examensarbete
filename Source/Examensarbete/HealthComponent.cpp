@@ -30,7 +30,6 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 	AController* InstigateBy, AActor* DamageCauser)
 {
 	if (Damage <= 0) return;
-	// GetWorld()->GetTimerManager().SetTimer(TimerHandle_RegenTime, &UHealthComponent::RegenHealth, 0.1f, true, RegenerateAfterTime);
 	CurrentHealth -= Damage;
 	CurrentHealth = FMath::Clamp(CurrentHealth,0.0f, MaxHealth);
 }
@@ -53,9 +52,9 @@ void UHealthComponent::Heal(float HealAmount)
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
 }
 
-void UHealthComponent::RegenHealth(float Amount)
+void UHealthComponent::RegenHealth()
 {
-	
+
 }
 
 float UHealthComponent::GetHealth()
