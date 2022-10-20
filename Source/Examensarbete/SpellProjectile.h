@@ -24,10 +24,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-
-	UPROPERTY(EditDefaultsOnly, Category = "Component")
-	class UCollisionComponent* CollisionComponent;
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Component")
 	UStaticMeshComponent* ProjectileMesh;
 
