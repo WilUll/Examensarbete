@@ -9,6 +9,13 @@ AAICharacter::AAICharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	RAttackCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("R Attack Collider"));
+	RAttackCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,TEXT("weapon_rSocket"));
+
+	LAttackCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("L Attack Collider"));
+	LAttackCollider->SetupAttachment(GetMesh(),  TEXT("weapon_lSocket"));
+
+	
 }
 
 // Called when the game starts or when spawned
