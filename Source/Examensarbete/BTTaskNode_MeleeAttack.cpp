@@ -20,7 +20,7 @@ EBTNodeResult::Type UBTTaskNode_MeleeAttack::ExecuteTask(UBehaviorTreeComponent&
 		return EBTNodeResult::Failed;
 	}
 
-	AAICharacter* AICharacter =  Cast<AAICharacter>(OwnerComp.GetAIOwner()->GetPawn()) ;
+	AAICharacter* AICharacter =  Cast<AAICharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
 	if (AICharacter == nullptr)
 	{
