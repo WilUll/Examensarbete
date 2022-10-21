@@ -20,6 +20,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void ToggleWeaponColliders(bool TrueOrFalse);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

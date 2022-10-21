@@ -3,6 +3,8 @@
 
 #include "AICharacter.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
+
 // Sets default values
 AAICharacter::AAICharacter()
 {
@@ -15,7 +17,12 @@ AAICharacter::AAICharacter()
 	LAttackCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("L Attack Collider"));
 	LAttackCollider->SetupAttachment(GetMesh(),  TEXT("weapon_lSocket"));
 
-	
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+
+	GetCharacterMovement()-> bOrientRotationToMovement = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +30,20 @@ void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void AAICharacter::ToggleWeaponColliders(bool TrueOrFalse)
+{
+	if (TrueOrFalse)
+	{
+		RAttackCollider -> SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+		LAttackCollider -> SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	}
+	else
+	{
+		RAttackCollider -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		LAttackCollider -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 // Called every frame
@@ -34,5 +55,6 @@ void AAICharacter::Tick(float DeltaTime)
 
 void AAICharacter::Attack()
 {
+	ToggleWeaponColliders(true);
 	
 }

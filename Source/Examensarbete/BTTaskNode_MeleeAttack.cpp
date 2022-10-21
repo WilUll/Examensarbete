@@ -3,8 +3,8 @@
 
 #include "BTTaskNode_MeleeAttack.h"
 
+#include "AICharacter.h"
 #include "AIController.h"
-#include "FPSCharacter.h"
 
 UBTTaskNode_MeleeAttack::UBTTaskNode_MeleeAttack()
 {
@@ -20,14 +20,14 @@ EBTNodeResult::Type UBTTaskNode_MeleeAttack::ExecuteTask(UBehaviorTreeComponent&
 		return EBTNodeResult::Failed;
 	}
 
-	AFPSCharacter* Character =  Cast<AFPSCharacter>(OwnerComp.GetAIOwner()->GetPawn()) ;
+	AAICharacter* AICharacter =  Cast<AAICharacter>(OwnerComp.GetAIOwner()->GetPawn()) ;
 
-	if (Character == nullptr)
+	if (AICharacter == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	Character -> Shoot();
+	AICharacter -> Attack();
 	
 	return EBTNodeResult::Succeeded;
 }
