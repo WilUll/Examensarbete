@@ -47,10 +47,13 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AWeapon> WeaponClass;
+	TArray<TSubclassOf<AWeapon>> WeaponClass;
 
 	UPROPERTY()
-	AWeapon* Weapon;
+	TArray<AWeapon*> Weapon;
+
+	UPROPERTY()
+	int32 WeaponInt;
 
 public:	
 	// Called every frame
@@ -63,4 +66,5 @@ public:
 
 	void StopShooting();
 
+	void ChangeWeapon(float Amount);
 };
