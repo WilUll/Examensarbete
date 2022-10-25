@@ -25,6 +25,8 @@ AWeapon::AWeapon()
 	DamageAmount = 25.f;
 	Range = 2000.f;
 	FireSpread = 2.f;
+	UnlimitedAmmo = false;
+	SingleFire = false;
 }
 
 // Called when the game starts or when spawned
@@ -110,25 +112,32 @@ void AWeapon::EndFire()
 
 void AWeapon::Reload()
 {
-	int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
-
-	if (CurrentAmmo == 0 && CurrentReserve == 0)
+	if (!UnlimitedAmmo)
 	{
+		int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
+
+		if (CurrentAmmo == 0 && CurrentReserve == 0)
+		{
 		
-	}
+		}
 
-	if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
+		if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
+		{
+			if (CurrentReserve <= AmmoDiffrence)
+			{
+				CurrentAmmo += CurrentReserve;
+				CurrentReserve -= AmmoDiffrence;
+			}
+			else 
+			{
+				CurrentAmmo += AmmoDiffrence;
+				CurrentReserve -= AmmoDiffrence;
+			}
+		}
+	}
+	else
 	{
-		if (CurrentReserve <= AmmoDiffrence)
-		{
-			CurrentAmmo += CurrentReserve;
-			CurrentReserve -= AmmoDiffrence;
-		}
-		else 
-		{
-			CurrentAmmo += AmmoDiffrence;
-			CurrentReserve -= AmmoDiffrence;
-		}
+		CurrentAmmo = MaxAmmo;
 	}
 }
 

@@ -120,7 +120,24 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		this,
 		&AFPSCharacter::Reload
 	);
+	PlayerInputComponent->BindAction(
+		"Jump",
+		IE_Pressed,
+		this,
+		&AFPSCharacter::StartJump
+	);
 }
+
+void AFPSCharacter::StartJump()
+{
+	Jump();
+}
+
+void AFPSCharacter::StopJump()
+{
+	StopJumping();
+}
+
 
 void AFPSCharacter::MoveForward(const float value)
 {

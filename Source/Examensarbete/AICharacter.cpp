@@ -32,7 +32,6 @@ AAICharacter::AAICharacter()
 void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	GetOwner()->SetLifeSpan(5);
 }
 
 void AAICharacter::ToggleWeaponColliders(bool TrueOrFalse)

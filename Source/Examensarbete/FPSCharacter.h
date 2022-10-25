@@ -40,6 +40,11 @@ protected:
 
 	void StopSprinting();
 
+	void StartJump();
+
+	void StopJump();
+
+
 
 
 	UPROPERTY(EditAnywhere, Category = "Camera")

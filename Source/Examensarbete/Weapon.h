@@ -25,7 +25,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int32 MaxAmmo;
 
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int32 MaxReserve;
 
@@ -89,4 +88,10 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly)
 	int32 CurrentAmmo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	bool UnlimitedAmmo;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	bool SingleFire;
 };
