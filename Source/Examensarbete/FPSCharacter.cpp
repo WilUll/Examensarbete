@@ -17,16 +17,24 @@ AFPSCharacter::AFPSCharacter()
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	FirstPersonCamera->SetupAttachment(RootComponent);
 	FirstPersonCamera->bUsePawnControlRotation = true;
+
+	WeaponInt = 0;
 }
 
 // Called when the game starts or when spawned
 void AFPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Weapon = GetWorld()->SpawnActor<AWeapon>(WeaponClass);
-	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("GrabPoint"));
-	Weapon->SetOwner(this);
+
+	for (int32 i = 0; i < WeaponClass.Num(); i++)
+	{
+		Weapon.Add(GetWorld()->SpawnActor<AWeapon>(WeaponClass[i]));
+		Weapon[i]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("GrabPoint"));
+		Weapon[i]->SetOwner(this);
+		Weapon[i]->SetHidden(true);
+	}
+
+	Weapon[WeaponInt]->SetHidden(false);
 
 	APlayerController* PlayerController{
 		GetWorld()->GetFirstPlayerController()
@@ -100,6 +108,11 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		this,
 		&AFPSCharacter::StopShooting
 	);
+	PlayerInputComponent->BindAxis(
+		"ChangeWeapon",
+		this,
+		&AFPSCharacter::ChangeWeapon
+	);
 }
 
 void AFPSCharacter::MoveForward(const float value)
@@ -136,10 +149,21 @@ void AFPSCharacter::StopSprinting()
 
 void AFPSCharacter::Shoot()
 {
-	Weapon->StartFire();
+	Weapon[WeaponInt]->StartFire();
 }
 
 void AFPSCharacter::StopShooting()
 {
-	Weapon->EndFire();
+	Weapon[WeaponInt]->EndFire();
+}
+
+void AFPSCharacter::ChangeWeapon(float Amount)
+{
+	Weapon[WeaponInt]->SetHidden(true);
+
+	
+	WeaponInt += Amount;
+	WeaponInt = FMath::Clamp(WeaponInt, 0, Weapon.Num() - 1);
+	
+	Weapon[WeaponInt]->SetHidden(false);
 }
