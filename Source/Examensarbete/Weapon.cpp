@@ -132,6 +132,21 @@ void AWeapon::Reload()
 	}
 }
 
+void AWeapon::SetWeaponInSocket(USceneComponent* Parent)
+{
+	AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, Socket);
+}
+
+UAnimationAsset* AWeapon::PlayEquipAnim()
+{
+	return EquipAnimation;
+}
+
+UAnimationAsset* AWeapon::GetIdleAnim()
+{
+	return IdleAnimation;
+}
+
 // Called every frame
 void AWeapon::Tick(float DeltaTime)
 {

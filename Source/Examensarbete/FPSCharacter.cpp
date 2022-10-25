@@ -29,12 +29,13 @@ void AFPSCharacter::BeginPlay()
 	for (int32 i = 0; i < WeaponClass.Num(); i++)
 	{
 		Weapon.Add(GetWorld()->SpawnActor<AWeapon>(WeaponClass[i]));
-		Weapon[i]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("GrabPoint"));
+		Weapon[i]->SetWeaponInSocket(GetMesh());
 		Weapon[i]->SetOwner(this);
-		Weapon[i]->SetHidden(true);
+		Weapon[i]->SetActorHiddenInGame(true);
 	}
 
-	Weapon[WeaponInt]->SetHidden(false);
+	Weapon[WeaponInt]->SetActorHiddenInGame(false);
+	GetMesh()->SetAnimation(Weapon[WeaponInt]->GetIdleAnim());
 
 	APlayerController* PlayerController{
 		GetWorld()->GetFirstPlayerController()
@@ -159,11 +160,13 @@ void AFPSCharacter::StopShooting()
 
 void AFPSCharacter::ChangeWeapon(float Amount)
 {
-	Weapon[WeaponInt]->SetHidden(true);
+	Weapon[WeaponInt]->SetActorHiddenInGame(true);
 
 	
 	WeaponInt += Amount;
 	WeaponInt = FMath::Clamp(WeaponInt, 0, Weapon.Num() - 1);
 	
-	Weapon[WeaponInt]->SetHidden(false);
+	Weapon[WeaponInt]->SetActorHiddenInGame(false);
+	GetMesh()->SetAnimation(Weapon[WeaponInt]->GetIdleAnim());
+
 }

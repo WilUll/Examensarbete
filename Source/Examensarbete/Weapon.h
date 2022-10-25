@@ -51,6 +51,15 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	FTimerHandle TimerHandle_FireRate;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName Socket;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UAnimSequence* IdleAnimation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UAnimSequence* EquipAnimation;
+	
 	float LastFireTime;
 
 	void Fire();
@@ -64,5 +73,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Reload();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetWeaponInSocket(USceneComponent* Parent);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UAnimationAsset* PlayEquipAnim();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UAnimationAsset* GetIdleAnim();
 };
