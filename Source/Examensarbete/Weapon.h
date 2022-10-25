@@ -64,6 +64,24 @@ protected:
 
 	void Fire();
 
+	//SOUNDS
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
+	USoundBase* ShootSound;
+
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
+	USoundBase* ReloadSound;
+
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
+	USoundBase* MagEmptySound;
+
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
+	USoundBase* NoAmmoSound;
+
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
+	USoundBase* HitSound;
+
+	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Combat")
+	UMaterial* HitDecal;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StartFire();
@@ -93,5 +111,5 @@ public:
 	bool UnlimitedAmmo;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	bool SingleFire;
+	bool SingleFire;	
 };

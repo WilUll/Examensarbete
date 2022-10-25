@@ -10,9 +10,9 @@
 // Sets default values
 AWeapon::AWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	RootComponent = WeaponMesh;
 
@@ -46,13 +46,13 @@ void AWeapon::Fire()
 	{
 		FVector EyeLocation;
 		FRotator EyeRotation;
-		MyOwner -> GetActorEyesViewPoint(EyeLocation,EyeRotation);
+		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 		FVector ShotDirection = EyeRotation.Vector();
 
 		//BulletSpread
 		float HalfRad = FMath::DegreesToRadians(FireSpread);
-		ShotDirection = FMath::VRandCone(ShotDirection,HalfRad,HalfRad);
+		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
 
 		FVector TraceEnd = EyeLocation + (ShotDirection * Range);
 
@@ -63,8 +63,15 @@ void AWeapon::Fire()
 
 		FVector TracerEndPoint = TraceEnd;
 
-		if (CurrentAmmo > 0 )
+		if (CurrentAmmo > 0)
 		{
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				ShootSound,
+				GetActorLocation(),
+				1,
+				FMath::RandRange(0.9f,1.1f)
+			);
 			CurrentAmmo -= 1;
 
 			DrawDebugLine(
@@ -78,31 +85,42 @@ void AWeapon::Fire()
 
 			FHitResult Hit;
 			if (GetWorld()->LineTraceSingleByChannel(Hit,
-				EyeLocation, TraceEnd, ECC_GameTraceChannel1, QueryParams))
+			                                         EyeLocation, TraceEnd, ECC_GameTraceChannel1, QueryParams))
 			{
 				AActor* HitActor = Hit.GetActor();
 
 
 				UGameplayStatics::ApplyDamage(HitActor,
-					DamageAmount,
-					MyOwner->GetInstigatorController(),
-					MyOwner,
-					UDamageType::StaticClass());
+				                              DamageAmount,
+				                              MyOwner->GetInstigatorController(),
+				                              MyOwner,
+				                              UDamageType::StaticClass());
 			}
 
 			LastFireTime = GetWorld()->TimeSeconds;
 		}
 		else
 		{
-			Reload();
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				MagEmptySound,
+				GetActorLocation()
+			);
 		}
 	}
 }
 
 void AWeapon::StartFire()
 {
-	float FirstDelay = FMath::Max(LastFireTime + FireRate - GetWorld()->TimeSeconds, 0.0f);
-	GetWorldTimerManager().SetTimer(TimerHandle_FireRate, this, &AWeapon::Fire, FireRate,true, FirstDelay);
+	if (SingleFire)
+	{
+		Fire();
+	}
+	else
+	{
+		float FirstDelay = FMath::Max(LastFireTime + FireRate - GetWorld()->TimeSeconds, 0.0f);
+		GetWorldTimerManager().SetTimer(TimerHandle_FireRate, this, &AWeapon::Fire, FireRate, true, FirstDelay);
+	}
 }
 
 void AWeapon::EndFire()
@@ -112,13 +130,19 @@ void AWeapon::EndFire()
 
 void AWeapon::Reload()
 {
+	UGameplayStatics::PlaySoundAtLocation(
+		this,
+		ReloadSound,
+		GetActorLocation(),
+		1,
+FMath::RandRange(0.8f,1.2f)
+	);
 	if (!UnlimitedAmmo)
 	{
 		int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
 
 		if (CurrentAmmo == 0 && CurrentReserve == 0)
 		{
-		
 		}
 
 		if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
@@ -128,7 +152,7 @@ void AWeapon::Reload()
 				CurrentAmmo += CurrentReserve;
 				CurrentReserve -= AmmoDiffrence;
 			}
-			else 
+			else
 			{
 				CurrentAmmo += AmmoDiffrence;
 				CurrentReserve -= AmmoDiffrence;
@@ -160,6 +184,4 @@ UAnimationAsset* AWeapon::GetIdleAnim()
 void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
