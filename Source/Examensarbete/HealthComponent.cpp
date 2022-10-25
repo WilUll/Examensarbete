@@ -31,7 +31,13 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 {
 	if (Damage <= 0) return;
 	CurrentHealth -= Damage;
+	if (CurrentHealth <= 0.0f)
+	{
+		Death();
+	}
 	CurrentHealth = FMath::Clamp(CurrentHealth,0.0f, MaxHealth);
+
+
 }
 
 
@@ -55,6 +61,14 @@ void UHealthComponent::Heal(float HealAmount)
 void UHealthComponent::RegenHealth()
 {
 
+}
+
+void UHealthComponent::Death()
+{
+	if (!GetOwner()->GetInstigatorController()->IsPlayerController())
+	{
+		GetOwner()->Destroy();
+	}
 }
 
 float UHealthComponent::GetHealth()

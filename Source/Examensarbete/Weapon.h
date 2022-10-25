@@ -24,11 +24,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int32 MaxAmmo;
-	int32 CurrentAmmo;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int32 MaxReserve;
-	int32 CurrentReserve;
+
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float DamageAmount;
@@ -82,4 +83,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	UAnimationAsset* GetIdleAnim();
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 CurrentReserve;
+	
+	UPROPERTY(BlueprintReadOnly)
+	int32 CurrentAmmo;
 };

@@ -3,6 +3,7 @@
 
 #include "AICharacter.h"
 
+#include "HealthComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -23,13 +24,15 @@ AAICharacter::AAICharacter()
 
 	GetCharacterMovement()-> bOrientRotationToMovement = true;
 
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
+
 }
 
 // Called when the game starts or when spawned
 void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetOwner()->SetLifeSpan(5);
 }
 
 void AAICharacter::ToggleWeaponColliders(bool TrueOrFalse)

@@ -25,6 +25,12 @@ protected:
 	void MoveForward(const float value);
 
 	void MoveRight(const float value);
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	float CameraMoveRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	class UCameraComponent* FirstPersonCamera;
+
 
 	void TurnPlayer(const float value);
 	
@@ -39,21 +45,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float TurnRate;
 	
-	UPROPERTY(EditAnywhere, Category = "Camera")
-	float CameraMoveRate;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	class UCameraComponent* FirstPersonCamera;
-
 private:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<AWeapon>> WeaponClass;
 
-	UPROPERTY()
-	TArray<AWeapon*> Weapon;
+	void Reload();
 
-	UPROPERTY()
-	int32 WeaponInt;
 
 public:	
 	// Called every frame
@@ -67,4 +64,10 @@ public:
 	void StopShooting();
 
 	void ChangeWeapon(float Amount);
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AWeapon*> Weapon;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 WeaponInt;
 };

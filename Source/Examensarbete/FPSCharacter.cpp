@@ -114,6 +114,12 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		this,
 		&AFPSCharacter::ChangeWeapon
 	);
+	PlayerInputComponent->BindAction(
+		"Reload",
+		IE_Pressed,
+		this,
+		&AFPSCharacter::Reload
+	);
 }
 
 void AFPSCharacter::MoveForward(const float value)
@@ -170,4 +176,9 @@ void AFPSCharacter::ChangeWeapon(float Amount)
 	
 	Weapon[WeaponInt]->SetActorHiddenInGame(false);
 	GetMesh()->SetAnimation(Weapon[WeaponInt]->GetIdleAnim());
+}
+
+void AFPSCharacter::Reload()
+{
+	Weapon[WeaponInt]->Reload();
 }

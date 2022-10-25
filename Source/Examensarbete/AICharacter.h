@@ -22,6 +22,9 @@ protected:
 
 	void ToggleWeaponColliders(bool TrueOrFalse);
 
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Health")
+	class UHealthComponent* HealthComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -32,5 +35,7 @@ public:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Combat")
 	UBoxComponent* RAttackCollider;
 	
-	void Attack();
+	void Attack()
+
+	
 };
