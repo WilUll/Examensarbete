@@ -78,7 +78,7 @@ public:
 	void SetWeaponInSocket(USceneComponent* Parent);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	UAnimationAsset* PlayEquipAnim();
+	UAnimationAsset* GetEquipAnim();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	UAnimationAsset* GetIdleAnim();

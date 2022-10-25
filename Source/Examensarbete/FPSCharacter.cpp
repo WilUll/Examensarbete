@@ -165,8 +165,9 @@ void AFPSCharacter::ChangeWeapon(float Amount)
 	
 	WeaponInt += Amount;
 	WeaponInt = FMath::Clamp(WeaponInt, 0, Weapon.Num() - 1);
+
+	
 	
 	Weapon[WeaponInt]->SetActorHiddenInGame(false);
 	GetMesh()->SetAnimation(Weapon[WeaponInt]->GetIdleAnim());
-
 }

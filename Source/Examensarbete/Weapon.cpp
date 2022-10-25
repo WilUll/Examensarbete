@@ -137,7 +137,7 @@ void AWeapon::SetWeaponInSocket(USceneComponent* Parent)
 	AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, Socket);
 }
 
-UAnimationAsset* AWeapon::PlayEquipAnim()
+UAnimationAsset* AWeapon::GetEquipAnim()
 {
 	return EquipAnimation;
 }
