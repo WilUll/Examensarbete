@@ -161,7 +161,7 @@ void AFPSCharacter::ChangeWeapon(float Amount)
 {
 	Weapon[WeaponInt]->SetHidden(true);
 
-	UE_LOG(LogType, Display, TEXT("%d"), Weapon.Num());
+	
 	WeaponInt += Amount;
 	WeaponInt = FMath::Clamp(WeaponInt, 0, Weapon.Num() - 1);
 	
