@@ -53,4 +53,5 @@ private:
 	void Death();
 public:
 	float GetHealth();
+
 };

@@ -18,6 +18,7 @@ AFPSCharacter::AFPSCharacter()
 	FirstPersonCamera->SetupAttachment(RootComponent);
 	FirstPersonCamera->bUsePawnControlRotation = true;
 
+
 	WeaponInt = 0;
 }
 

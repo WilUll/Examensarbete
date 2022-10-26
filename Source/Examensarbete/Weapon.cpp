@@ -130,39 +130,43 @@ void AWeapon::EndFire()
 
 void AWeapon::Reload()
 {
-	UGameplayStatics::PlaySoundAtLocation(
+	if (CurrentAmmo != MaxAmmo)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
 		this,
 		ReloadSound,
 		GetActorLocation(),
 		1,
 FMath::RandRange(0.8f,1.2f)
 	);
-	if (!UnlimitedAmmo)
-	{
-		int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
-
-		if (CurrentAmmo == 0 && CurrentReserve == 0)
+		if (!UnlimitedAmmo)
 		{
+			int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
+
+			if (CurrentAmmo == 0 && CurrentReserve == 0)
+			{
+			}
+
+			if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
+			{
+				if (CurrentReserve <= AmmoDiffrence)
+				{
+					CurrentAmmo += CurrentReserve;
+					CurrentReserve -= AmmoDiffrence;
+				}
+				else
+				{
+					CurrentAmmo += AmmoDiffrence;
+					CurrentReserve -= AmmoDiffrence;
+				}
+			}
 		}
-
-		if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
+		else
 		{
-			if (CurrentReserve <= AmmoDiffrence)
-			{
-				CurrentAmmo += CurrentReserve;
-				CurrentReserve -= AmmoDiffrence;
-			}
-			else
-			{
-				CurrentAmmo += AmmoDiffrence;
-				CurrentReserve -= AmmoDiffrence;
-			}
+			CurrentAmmo = MaxAmmo;
 		}
 	}
-	else
-	{
-		CurrentAmmo = MaxAmmo;
-	}
+	
 }
 
 void AWeapon::SetWeaponInSocket(USceneComponent* Parent)

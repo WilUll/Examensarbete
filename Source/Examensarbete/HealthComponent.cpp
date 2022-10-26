@@ -3,6 +3,7 @@
 
 #include "HealthComponent.h"
 
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
@@ -27,7 +28,7 @@ void UHealthComponent::BeginPlay()
 }
 
 void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-	AController* InstigateBy, AActor* DamageCauser)
+                                  AController* InstigateBy, AActor* DamageCauser)
 {
 	if (Damage <= 0) return;
 	CurrentHealth -= Damage;
@@ -36,14 +37,13 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 		Death();
 		return;
 	}
-	CurrentHealth = FMath::Clamp(CurrentHealth,0.0f, MaxHealth);
-
-
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
 }
 
 
 // Called every frame
-void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                     FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -61,14 +61,20 @@ void UHealthComponent::Heal(float HealAmount)
 
 void UHealthComponent::RegenHealth()
 {
-
 }
 
 void UHealthComponent::Death()
 {
 	if (!GetOwner()->GetInstigatorController()->IsPlayerController())
 	{
-		GetOwner()->Destroy();
+		USkeletalMeshComponent* SkeletalMeshComp = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+		UCapsuleComponent* CapsuleComp = GetOwner()->FindComponentByClass<UCapsuleComponent>();
+		if (SkeletalMeshComp != nullptr && CapsuleComp != nullptr)
+		{
+			CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			SkeletalMeshComp->SetSimulatePhysics(true);
+		}
 	}
 }
 
@@ -76,4 +82,3 @@ float UHealthComponent::GetHealth()
 {
 	return CurrentHealth;
 }
-
