@@ -65,7 +65,7 @@ void UHealthComponent::RegenHealth()
 
 void UHealthComponent::Death()
 {
-	if (!GetOwner()->GetInstigatorController()->IsPlayerController())
+	if (GetOwner() != nullptr && !GetOwner()->GetInstigatorController()->IsPlayerController())
 	{
 		USkeletalMeshComponent* SkeletalMeshComp = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
 		UCapsuleComponent* CapsuleComp = GetOwner()->FindComponentByClass<UCapsuleComponent>();

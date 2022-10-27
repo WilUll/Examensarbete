@@ -13,7 +13,7 @@ void AEnemyAIController::BeginPlay()
 	{
 		RunBehaviorTree(AIBehaviorTree);
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-		
+
 		GetBlackboardComponent()->SetValueAsObject(TEXT("Target"), UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	}
 }
