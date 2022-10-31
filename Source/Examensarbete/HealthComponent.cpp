@@ -78,7 +78,12 @@ void UHealthComponent::Death()
 	}
 }
 
-float UHealthComponent::GetHealth()
+float UHealthComponent::GetHealth() const
+{
+	return MaxHealth;
+}
+
+float UHealthComponent::GetCurrentHealth() const
 {
 	return CurrentHealth;
 }

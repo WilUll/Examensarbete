@@ -3,6 +3,7 @@
 
 #include "FPSCharacter.h"
 
+#include "HealthComponent.h"
 #include "Weapon.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -17,6 +18,8 @@ AFPSCharacter::AFPSCharacter()
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	FirstPersonCamera->SetupAttachment(RootComponent);
 	FirstPersonCamera->bUsePawnControlRotation = true;
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 
 
 	WeaponInt = 0;
@@ -170,6 +173,11 @@ void AFPSCharacter::Sprint()
 void AFPSCharacter::StopSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+}
+
+UHealthComponent* AFPSCharacter::GetHealthComponent()
+{
+	return HealthComponent;
 }
 
 void AFPSCharacter::Shoot()

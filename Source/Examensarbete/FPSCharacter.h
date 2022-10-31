@@ -33,7 +33,7 @@ protected:
 
 
 	void TurnPlayer(const float value);
-	
+
 	void MoveCamera(const float value);
 
 	void Sprint();
@@ -45,11 +45,9 @@ protected:
 	void StopJump();
 
 
-
-
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float TurnRate;
-	
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TSubclassOf<AWeapon>> WeaponClass;
@@ -57,12 +55,18 @@ private:
 	void Reload();
 
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Health")
+	class UHealthComponent* HealthComponent;
+
+	UFUNCTION(BlueprintGetter)
+	UHealthComponent* GetHealthComponent();
 
 	void Shoot();
 

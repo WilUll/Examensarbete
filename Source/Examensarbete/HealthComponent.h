@@ -52,6 +52,10 @@ private:
 
 	void Death();
 public:
-	float GetHealth();
+	UFUNCTION(BlueprintGetter)
+	float GetHealth() const;
+	
+	UFUNCTION(BlueprintGetter)
+	float GetCurrentHealth() const;
 
 };
