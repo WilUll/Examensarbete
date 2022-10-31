@@ -27,7 +27,5 @@ EBTNodeResult::Type UBTTaskNode_MeleeAttack::ExecuteTask(UBehaviorTreeComponent&
 		return EBTNodeResult::Failed;
 	}
 
-	AICharacter -> Attack();
-	
 	return EBTNodeResult::Succeeded;
 }

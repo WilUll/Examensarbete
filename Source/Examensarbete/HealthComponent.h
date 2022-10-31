@@ -23,7 +23,10 @@ protected:
 	UFUNCTION()
 	void TakeDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType, AController *InstigateBy, AActor * DamageCauser);
 
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Health")
+	float MaxHealth;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentHealth;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -33,10 +36,7 @@ public:
 private:
 	bool IsDead;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
-	float MaxHealth;
-	UPROPERTY(VisibleAnywhere)
-	float CurrentHealth;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	bool CanRegen;
@@ -52,10 +52,10 @@ private:
 
 	void Death();
 public:
-	UFUNCTION(BlueprintGetter)
+	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	float GetHealth() const;
 	
-	UFUNCTION(BlueprintGetter)
+	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	float GetCurrentHealth() const;
 
 };

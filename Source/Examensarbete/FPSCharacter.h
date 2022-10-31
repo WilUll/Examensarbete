@@ -62,10 +62,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Health")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Health")
 	class UHealthComponent* HealthComponent;
 
-	UFUNCTION(BlueprintGetter)
+	UFUNCTION(BlueprintCallable)
 	UHealthComponent* GetHealthComponent();
 
 	void Shoot();

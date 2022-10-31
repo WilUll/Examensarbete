@@ -20,10 +20,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void ToggleWeaponColliders(bool TrueOrFalse);
+	void ToggleWeaponColliders(bool TrueOrFalse) const;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Health")
 	class UHealthComponent* HealthComponent;
+
+	APawn* PlayerPawn;
+
+	UPROPERTY(EditDefaultsOnly)
+	float DamageAmount;
 
 public:	
 	// Called every frame
@@ -35,5 +40,10 @@ public:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Combat")
 	UBoxComponent* RAttackCollider;
 	
-	void Attack();
+	void AttackStart();
+
+	void AttackEnd();
+
+	UFUNCTION()
+	void DealDamage(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
