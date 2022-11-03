@@ -21,6 +21,7 @@ AFPSCharacter::AFPSCharacter()
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 
+	FirstPersonCamera->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("head"));
 
 	WeaponInt = 0;
 }
@@ -163,6 +164,7 @@ void AFPSCharacter::MoveCamera(const float value)
 {
 	AddControllerPitchInput(
 		CameraMoveRate * value * GetWorld()->GetDeltaSeconds());
+
 }
 
 void AFPSCharacter::Sprint()
@@ -192,13 +194,13 @@ void AFPSCharacter::StopShooting()
 
 void AFPSCharacter::ChangeWeapon(float Amount)
 {
+	
 	Weapon[WeaponInt]->SetActorHiddenInGame(true);
 	
 	WeaponInt += Amount;
 	WeaponInt = FMath::Clamp(WeaponInt, 0, Weapon.Num() - 1);
 	
 	Weapon[WeaponInt]->SetActorHiddenInGame(false);
-	GetMesh()->SetAnimation(Weapon[WeaponInt]->GetIdleAnim());
 }
 
 void AFPSCharacter::Reload()

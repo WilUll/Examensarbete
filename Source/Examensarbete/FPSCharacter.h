@@ -79,4 +79,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	int32 WeaponInt;
+
+	FTimerManager ChangeWeaponTimer;
 };
