@@ -3,6 +3,7 @@
 
 #include "Weapon.h"
 
+#include "BaseProjectile.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "DrawDebugHelpers.h"
@@ -40,29 +41,79 @@ void AWeapon::BeginPlay()
 
 void AWeapon::Fire()
 {
-	AActor* MyOwner = GetOwner();
+	// if (ProjectileClass)
+	// {
+	// 	AActor* MyOwner = GetOwner();
+	// 	if (MyOwner)
+	// 	{
+	// 		FVector EyeLocation;
+	// 		FRotator EyeRotation;
+	// 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+	//
+	// 		FVector ShotDirection = EyeRotation.Vector();
+	//
+	// 		//BulletSpread
+	// 		float HalfRad = FMath::DegreesToRadians(FireSpread);
+	// 		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+	//
+	// 		FVector TraceEnd = EyeLocation + (ShotDirection * Range);
+	//
+	// 		FCollisionQueryParams QueryParams;
+	// 		QueryParams.AddIgnoredActor(MyOwner);
+	// 		QueryParams.AddIgnoredActor(this);
+	// 		QueryParams.bTraceComplex = true;
+	//
+	// 		FVector TracerEndPoint = TraceEnd;
+	// 		
+	// 		UWorld* World = GetWorld();
+	// 		if (World)
+	// 		{
+	// 			FActorSpawnParameters SpawnParams;
+	// 			SpawnParams.Owner = MyOwner;
+	// 			SpawnParams.Instigator = GetInstigator();
+	//
+	// 			ABaseProjectile* Projectile = World->SpawnActor<ABaseProjectile>(
+	// 				ProjectileClass, MuzzleLocation->GetComponentLocation(), MuzzleLocation->GetComponentRotation(),
+	// 				SpawnParams);
+	// 			if (Projectile)
+	// 			{
+	// 				FVector LaunchDirection = MuzzleLocation->GetComponentRotation().Vector();
+	// 				Projectile->FireInDirection(LaunchDirection);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
+
+	AActor* MyOwner = GetOwner();
+	
 	if (MyOwner)
 	{
 		FVector EyeLocation;
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-
+	
 		FVector ShotDirection = EyeRotation.Vector();
-
+	
 		//BulletSpread
 		float HalfRad = FMath::DegreesToRadians(FireSpread);
 		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
-
+	
 		FVector TraceEnd = EyeLocation + (ShotDirection * Range);
-
+	
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MyOwner);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 
-		FVector TracerEndPoint = TraceEnd;
+		FActorSpawnParameters SpawnParameters;
+	
 
+		ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass, MuzzleLocation->GetComponentTransform());
+
+		Projectile->FireInDirection(EyeRotation.Vector());
+		
+		
 		if (CurrentAmmo > 0)
 		{
 			UGameplayStatics::PlaySoundAtLocation(
@@ -73,30 +124,30 @@ void AWeapon::Fire()
 				FMath::RandRange(0.9f,1.1f)
 			);
 			CurrentAmmo -= 1;
-
+	
 			DrawDebugLine(
 				GetWorld(),
-				EyeLocation,
+				MuzzleLocation->GetComponentLocation(),
 				TraceEnd,
 				FColor::Red,
 				false,
 				2.f
 			);
-
+	
 			FHitResult Hit;
 			if (GetWorld()->LineTraceSingleByChannel(Hit,
 			                                         EyeLocation, TraceEnd, ECC_GameTraceChannel1, QueryParams))
 			{
 				AActor* HitActor = Hit.GetActor();
-
-
+	
+	
 				UGameplayStatics::ApplyDamage(HitActor,
 				                              DamageAmount,
 				                              MyOwner->GetInstigatorController(),
 				                              MyOwner,
 				                              UDamageType::StaticClass());
 			}
-
+	
 			LastFireTime = GetWorld()->TimeSeconds;
 		}
 		else
@@ -133,12 +184,12 @@ void AWeapon::Reload()
 	if (CurrentAmmo != MaxAmmo)
 	{
 		UGameplayStatics::PlaySoundAtLocation(
-		this,
-		ReloadSound,
-		GetActorLocation(),
-		1,
-FMath::RandRange(0.8f,1.2f)
-	);
+			this,
+			ReloadSound,
+			GetActorLocation(),
+			1,
+			FMath::RandRange(0.8f, 1.2f)
+		);
 		if (!UnlimitedAmmo)
 		{
 			int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
@@ -166,7 +217,6 @@ FMath::RandRange(0.8f,1.2f)
 			CurrentAmmo = MaxAmmo;
 		}
 	}
-	
 }
 
 void AWeapon::SetWeaponInSocket(USceneComponent* Parent)

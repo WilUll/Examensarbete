@@ -111,5 +111,8 @@ public:
 	bool UnlimitedAmmo;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	bool SingleFire;	
+	bool SingleFire;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class ABaseProjectile> ProjectileClass;
 };

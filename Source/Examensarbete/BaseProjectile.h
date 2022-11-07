@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseProjectile.generated.h"
 
+
+
 UCLASS()
 class EXAMENSARBETE_API ABaseProjectile : public AActor
 {
@@ -19,13 +21,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	class UProjectileMovementComponent* ProjectileMovement;
 
-	UStaticMeshComponent* ProjectileMesh;
 	
-	class UCapsuleComponent* Collider;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+	class USphereComponent* CollisionComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = Movement)
+	class UProjectileMovementComponent* ProjectileMovementComponent;
+
+	void FireInDirection(const FVector& ShootDirection);
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+	UStaticMeshComponent* ProjectileMeshComponent;
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };
