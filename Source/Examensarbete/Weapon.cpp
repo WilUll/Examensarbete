@@ -139,13 +139,27 @@ void AWeapon::Fire()
 			                                         EyeLocation, TraceEnd, ECC_GameTraceChannel1, QueryParams))
 			{
 				AActor* HitActor = Hit.GetActor();
+				FString BoneName;
+				Hit.BoneName.AppendString(BoneName);
+
+				if (BoneName.ToLower() == "head")
+				{
+					UGameplayStatics::ApplyDamage(HitActor,
+											  DamageAmount * 2,
+											  MyOwner->GetInstigatorController(),
+											  MyOwner,
+											  UDamageType::StaticClass());
+				}
+				else
+				{
+					UGameplayStatics::ApplyDamage(HitActor,
+											  DamageAmount,
+											  MyOwner->GetInstigatorController(),
+											  MyOwner,
+											  UDamageType::StaticClass());
+				}
 	
-	
-				UGameplayStatics::ApplyDamage(HitActor,
-				                              DamageAmount,
-				                              MyOwner->GetInstigatorController(),
-				                              MyOwner,
-				                              UDamageType::StaticClass());
+				
 			}
 	
 			LastFireTime = GetWorld()->TimeSeconds;
