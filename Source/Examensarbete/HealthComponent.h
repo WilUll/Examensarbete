@@ -7,6 +7,8 @@
 #include "HealthComponent.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FActorHasDied);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class EXAMENSARBETE_API UHealthComponent : public UActorComponent
 {
@@ -32,6 +34,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void Heal(float HealAmount);
+
+	UPROPERTY(BlueprintAssignable)
+	FActorHasDied OnActorDeath;
 
 private:
 	bool IsDead;

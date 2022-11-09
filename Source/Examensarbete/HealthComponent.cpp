@@ -34,7 +34,8 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 	CurrentHealth -= Damage;
 	if (CurrentHealth <= 0.0f)
 	{
-		Death();
+		OnActorDeath.Broadcast();
+		//Death();
 		return;
 	}
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);

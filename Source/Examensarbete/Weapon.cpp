@@ -89,33 +89,31 @@ void AWeapon::Fire()
 	
 	if (MyOwner)
 	{
-		FVector EyeLocation;
-		FRotator EyeRotation;
-		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-	
-		FVector ShotDirection = EyeRotation.Vector();
-	
-		//BulletSpread
-		float HalfRad = FMath::DegreesToRadians(FireSpread);
-		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
-	
-		FVector TraceEnd = EyeLocation + (ShotDirection * Range);
-	
-		FCollisionQueryParams QueryParams;
-		QueryParams.AddIgnoredActor(MyOwner);
-		QueryParams.AddIgnoredActor(this);
-		QueryParams.bTraceComplex = true;
-
-		FActorSpawnParameters SpawnParameters;
-	
-
-		ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass, MuzzleLocation->GetComponentTransform());
-
-		Projectile->FireInDirection(EyeRotation.Vector());
-		
-		
 		if (CurrentAmmo > 0)
 		{
+			FVector EyeLocation;
+			FRotator EyeRotation;
+			MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+	
+			FVector ShotDirection = EyeRotation.Vector();
+	
+			//BulletSpread
+			float HalfRad = FMath::DegreesToRadians(FireSpread);
+			ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+	
+			FVector TraceEnd = EyeLocation + (ShotDirection * Range);
+	
+			FCollisionQueryParams QueryParams;
+			QueryParams.AddIgnoredActor(MyOwner);
+			QueryParams.AddIgnoredActor(this);
+			QueryParams.bTraceComplex = true;
+
+			FActorSpawnParameters SpawnParameters;
+	
+
+			ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass, MuzzleLocation->GetComponentTransform());
+
+			Projectile->FireInDirection(EyeRotation.Vector());
 			UGameplayStatics::PlaySoundAtLocation(
 				this,
 				ShootSound,
@@ -138,26 +136,7 @@ void AWeapon::Fire()
 			if (GetWorld()->LineTraceSingleByChannel(Hit,
 			                                         EyeLocation, TraceEnd, ECC_GameTraceChannel1, QueryParams))
 			{
-				AActor* HitActor = Hit.GetActor();
-				FString BoneName;
-				Hit.BoneName.AppendString(BoneName);
-
-				if (BoneName.ToLower() == "head")
-				{
-					UGameplayStatics::ApplyDamage(HitActor,
-											  DamageAmount * 2,
-											  MyOwner->GetInstigatorController(),
-											  MyOwner,
-											  UDamageType::StaticClass());
-				}
-				else
-				{
-					UGameplayStatics::ApplyDamage(HitActor,
-											  DamageAmount,
-											  MyOwner->GetInstigatorController(),
-											  MyOwner,
-											  UDamageType::StaticClass());
-				}
+				
 	
 				
 			}
@@ -206,23 +185,21 @@ void AWeapon::Reload()
 		);
 		if (!UnlimitedAmmo)
 		{
-			int32 AmmoDiffrence = MaxAmmo - CurrentAmmo;
+			int32 AmmoToReload = MaxAmmo - CurrentAmmo;
 
-			if (CurrentAmmo == 0 && CurrentReserve == 0)
-			{
-			}
+			if (CurrentReserve <= 0) return;
 
-			if (CurrentAmmo >= 0 && CurrentAmmo < MaxAmmo)
+			if (CurrentAmmo < MaxAmmo && CurrentAmmo >= 0)
 			{
-				if (CurrentReserve <= AmmoDiffrence)
+				if (AmmoToReload > CurrentReserve)
 				{
 					CurrentAmmo += CurrentReserve;
-					CurrentReserve -= AmmoDiffrence;
+					CurrentReserve = 0;
 				}
 				else
 				{
-					CurrentAmmo += AmmoDiffrence;
-					CurrentReserve -= AmmoDiffrence;
+					CurrentAmmo = MaxAmmo;
+					CurrentReserve -= AmmoToReload;
 				}
 			}
 		}

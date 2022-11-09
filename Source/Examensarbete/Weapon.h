@@ -101,10 +101,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	UAnimationAsset* GetIdleAnim();
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	int32 CurrentReserve;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	int32 CurrentAmmo;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")

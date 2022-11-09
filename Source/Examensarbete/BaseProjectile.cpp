@@ -5,6 +5,7 @@
 
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 ABaseProjectile::ABaseProjectile()
 {
@@ -78,9 +79,36 @@ void ABaseProjectile::FireInDirection(const FVector& ShootDirection)
 void ABaseProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor != this && OtherComponent->IsSimulatingPhysics())
+
+	UE_LOG(LogTemp, Display, TEXT("IN HIT FUNC"))
+	if (OtherActor != this)
 	{
-		OtherComponent->AddImpulseAtLocation(ProjectileMovementComponent->Velocity * 100.0f, Hit.ImpactPoint);
+		UE_LOG(LogTemp, Display, TEXT("HIT ACTOR: %s"), Hit.GetActor())
+		UGameplayStatics::ApplyDamage(OtherActor,
+			Damage,
+			UGameplayStatics::GetPlayerController(GetWorld(), 0),
+			UGameplayStatics::GetPlayerPawn(GetWorld(), 0),
+			UDamageType::StaticClass()
+			);
+		FString BoneName;
+		Hit.BoneName.AppendString(BoneName);
+		
+		if (BoneName.ToLower() == "head")
+		{
+			UGameplayStatics::ApplyDamage(OtherActor,
+									  Damage * 2,
+									  UGameplayStatics::GetPlayerController(GetWorld(), 0),
+									  UGameplayStatics::GetPlayerPawn(GetWorld(), 0),
+									  UDamageType::StaticClass());
+		}
+		else
+		{
+			UGameplayStatics::ApplyDamage(OtherActor,
+									  Damage,
+									  UGameplayStatics::GetPlayerController(GetWorld(), 0),
+									  UGameplayStatics::GetPlayerPawn(GetWorld(), 0),
+									  UDamageType::StaticClass());
+		}
 	}
 
 	Destroy();

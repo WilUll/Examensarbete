@@ -40,7 +40,6 @@ AAICharacter::AAICharacter()
 void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	ToggleWeaponColliders(false);
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 }
 

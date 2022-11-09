@@ -22,7 +22,7 @@ protected:
 
 	void ToggleWeaponColliders(bool TrueOrFalse) const;
 
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Health")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"), Category = "Health")
 	class UHealthComponent* HealthComponent;
 
 	APawn* PlayerPawn;
