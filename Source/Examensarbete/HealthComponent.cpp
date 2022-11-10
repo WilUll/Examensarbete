@@ -12,8 +12,6 @@ UHealthComponent::UHealthComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -32,6 +30,12 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 {
 	if (Damage <= 0) return;
 	CurrentHealth -= Damage;
+
+	if (CanRegen)
+	{
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle_RegenTime, this, &UHealthComponent::RegenHealth, 0.1f, true, RegenerateAfterTime);
+	}
+	
 	if (CurrentHealth <= 0.0f)
 	{
 		OnActorDeath.Broadcast();
@@ -62,6 +66,11 @@ void UHealthComponent::Heal(float HealAmount)
 
 void UHealthComponent::RegenHealth()
 {
+	Heal(RegenerateHealthAmount);
+	if (CanRegen && CurrentHealth >= MaxHealth)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandle_RegenTime);
+	}
 }
 
 void UHealthComponent::Death()
