@@ -39,7 +39,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Combat")
 	UBoxComponent* RAttackCollider;
-	
+
 	void AttackStart();
 
 	void AttackEnd();

@@ -62,6 +62,7 @@ void ABaseProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	UE_LOG(LogTemp, Display, TEXT("Owner is: %s"), GetOwner());
 }
 
 // Called every frame

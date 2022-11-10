@@ -113,6 +113,8 @@ void AWeapon::Fire()
 
 			ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass, MuzzleLocation->GetComponentTransform());
 
+			Projectile->SetOwner(this);
+			
 			Projectile->FireInDirection(EyeRotation.Vector());
 			UGameplayStatics::PlaySoundAtLocation(
 				this,

@@ -65,13 +65,11 @@ void AAICharacter::Tick(float DeltaTime)
 
 void AAICharacter::AttackStart()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 4.5f, FColor::Red, "Attacking");
 	ToggleWeaponColliders(true);
 }
 
 void AAICharacter::AttackEnd()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 4.5f, FColor::Red, "StopAttack");
 	ToggleWeaponColliders(false);
 }
 
@@ -88,6 +86,5 @@ void AAICharacter::DealDamage(UPrimitiveComponent* OverlappedComp, AActor* Other
 			                              this,
 			                              UDamageType::StaticClass());
 		}
-		GEngine->AddOnScreenDebugMessage(-1, 4.5f, FColor::Cyan, "HitPlayer");
 	}
 }
