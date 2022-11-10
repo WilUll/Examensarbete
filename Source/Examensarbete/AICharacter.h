@@ -40,10 +40,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UBoxComponent* RAttackCollider;
 
-	void AttackStart();
-
-	void AttackEnd();
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsAttacking;
 
 	UFUNCTION()

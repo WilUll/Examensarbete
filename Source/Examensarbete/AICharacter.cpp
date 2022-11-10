@@ -17,14 +17,12 @@ AAICharacter::AAICharacter()
 	RAttackCollider->SetupAttachment(GetMesh(), TEXT("weapon_rSocket"));
 	RAttackCollider->SetCollisionProfileName(FName("OverlapAll"));
 	RAttackCollider->MoveIgnoreActors.Add(this);
-	RAttackCollider->OnComponentBeginOverlap.AddDynamic(this, &AAICharacter::DealDamage);
 	RAttackCollider->SetNotifyRigidBodyCollision(true);
 
 	LAttackCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("L Attack Collider"));
 	LAttackCollider->SetupAttachment(GetMesh(), TEXT("weapon_lSocket"));
 	LAttackCollider->SetCollisionProfileName(FName("OverlapAll"));
 	LAttackCollider->MoveIgnoreActors.Add(this);
-	LAttackCollider->OnComponentBeginOverlap.AddDynamic(this, &AAICharacter::DealDamage);
 	LAttackCollider->SetNotifyRigidBodyCollision(true);
 
 	bUseControllerRotationPitch = false;
@@ -48,16 +46,6 @@ void AAICharacter::BeginPlay()
 void AAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void AAICharacter::AttackStart()
-{
-	bIsAttacking = true;
-}
-
-void AAICharacter::AttackEnd()
-{
-	bIsAttacking = false;
 }
 
 void AAICharacter::DealDamage(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
