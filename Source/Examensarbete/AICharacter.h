@@ -34,15 +34,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UBoxComponent* LAttackCollider;
 	
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"), Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UBoxComponent* RAttackCollider;
 
 	void AttackStart();
 
 	void AttackEnd();
+
+	bool bIsAttacking;
 
 	UFUNCTION()
 	void DealDamage(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

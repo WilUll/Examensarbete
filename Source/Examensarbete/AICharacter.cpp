@@ -43,19 +43,6 @@ void AAICharacter::BeginPlay()
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 }
 
-void AAICharacter::ToggleWeaponColliders(bool TrueOrFalse) const
-{
-	if (TrueOrFalse)
-	{
-		RAttackCollider->SetCollisionProfileName(TEXT("OverlapAll"));
-		LAttackCollider->SetCollisionProfileName(TEXT("OverlapAll"));
-	}
-	else
-	{
-		RAttackCollider->SetCollisionProfileName(TEXT("NoCollision"));
-		LAttackCollider->SetCollisionProfileName(TEXT("NoCollision"));
-	}
-}
 
 // Called every frame
 void AAICharacter::Tick(float DeltaTime)
@@ -65,26 +52,33 @@ void AAICharacter::Tick(float DeltaTime)
 
 void AAICharacter::AttackStart()
 {
-	ToggleWeaponColliders(true);
+	bIsAttacking = true;
 }
 
 void AAICharacter::AttackEnd()
 {
-	ToggleWeaponColliders(false);
+	bIsAttacking = false;
 }
 
 void AAICharacter::DealDamage(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                               int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && (OtherActor != this) && OtherComp)
+
+	UE_LOG(LogTemp, Display, TEXT("HitPlayer"));
+	if (bIsAttacking)
 	{
-		if (OtherActor == PlayerPawn)
+		UE_LOG(LogTemp, Display, TEXT("In Attack"));
+
+		if (OtherActor && (OtherActor != this) && OtherComp)
 		{
-			UGameplayStatics::ApplyDamage(OtherActor,
-			                              DamageAmount,
-			                              this->GetInstigatorController(),
-			                              this,
-			                              UDamageType::StaticClass());
+			if (OtherActor == PlayerPawn)
+			{
+				UGameplayStatics::ApplyDamage(OtherActor,
+											  DamageAmount,
+											  this->GetInstigatorController(),
+											  this,
+											  UDamageType::StaticClass());
+			}
 		}
 	}
 }
