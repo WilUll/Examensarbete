@@ -6,6 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFiring);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponStopFire);
+
+
 UCLASS()
 class EXAMENSARBETE_API AWeapon : public AActor
 {
@@ -18,6 +22,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(BlueprintAssignable)
+	FWeaponFiring OnWeaponFire;
+
+	UPROPERTY(BlueprintAssignable)
+	FWeaponStopFire OnWeaponStopFire;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,6 +72,8 @@ protected:
 	float LastFireTime;
 
 	void Fire();
+
+	
 
 	//SOUNDS
 	UPROPERTY (EditAnywhere,BlueprintReadWrite, Category = "Sounds")
